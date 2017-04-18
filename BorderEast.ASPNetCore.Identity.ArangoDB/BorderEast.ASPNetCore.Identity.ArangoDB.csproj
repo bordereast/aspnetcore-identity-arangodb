@@ -2,13 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <Authors>Andrew Grothe</Authors>
+    <Company>BorderEast</Company>
+    <Description>ASP.NET Core Identity integration for ArangoDB</Description>
+    <Copyright>Border East 2017</Copyright>
+    <RepositoryUrl>https://github.com/bordereast/aspnetcore-identity-arangodob.git</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/bordereast/aspnetcore-identity-arangodb</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/bordereast/aspnetcore-identity-arangodb</PackageProjectUrl>
+    <PackageTags>ASP.NET Core Identity, ArangoDB, NetCore</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BorderEast.ArangoDB.Client" Version="0.1.2" />
+    <PackageReference Include="BorderEast.ArangoDB.Client" Version="0.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using BorderEast.ArangoDB.Client;
+using BorderEast.ArangoDB.Client.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,6 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
     where TRole : IdentityRole {
 
         private IRoleStore<TRole> roleStore;
-        private IArangoClient client;
         public UserStore(IArangoClient arangoClient, IRoleStore<TRole> roleStore)
             : base(arangoClient) {
             this.roleStore = roleStore;
@@ -110,15 +110,20 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
             }
 
             // If no UserId was supplied, ArangoDb generates a key
+            string key = null;
+            try {
+                var result = await client.DB().InsertAsync<TUser>(user);
+                key = result.Key;
+            } catch (Exception e) {
+                var s = e;
+            }
+            user.Key = key;
 
-            var result = await client.DB().InsertAsync<TUser>(user);
-            user.Key = result.Key;
 
-
-            return string.IsNullOrEmpty(result.Key) == false
+            return string.IsNullOrEmpty(key) == false
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError() { Code = "Insert failed" });
-        }
+            }
 
         public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
@@ -202,6 +207,10 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
 
 
             var result = await client.DB().GetByExampleAsync<TUser>(new { normalizedUserName = normalizedUserName });
+
+            if (result == null) {
+                return null;
+            }
 
             return result.FirstOrDefault();
         }
@@ -744,13 +753,9 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
 
             try {
 
-                //user.RoleIds.Clear();
+                var result = await client.DB().UpdateAsync(user.Key, user);
 
-                //foreach (var role in user.Roles) {
-                //    user.RoleIds.Add(role.Id);
-                //}
-
-                //await client.UpdateAsync<TUser>(user);
+                user = result.New;
 
             }
             catch (Exception) {
