@@ -290,7 +290,19 @@ namespace SampleApp.Controllers
             {
                 return View("Error");
             }
+
+            // add logins
+            //user.Logins.Add(new UserLoginInfo("google", "googlekey", "gmail.com"));
+            //user.Logins.Add(new UserLoginInfo("github", "githubauthkey", "github.com"));
+
+            //var r =await _userManager.UpdateAsync(user);
+
+            var l = await _userManager.FindByLoginAsync("google", "googlekey");
+
+            //
             var userLogins = await _userManager.GetLoginsAsync(user);
+
+
             var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
             ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
             return View(new ManageLoginsViewModel

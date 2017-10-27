@@ -191,8 +191,12 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
                 throw new ArgumentNullException(nameof(loginProvider));
             }
 
-            var user = await client.DB().GetByExampleAsync<TUser>(new { logins = new { loginProvider = loginProvider, providerKey = providerKey } });
+               
+            var user = await client.DB().Query<TUser>("for u in IdentityUser for l in u.logins filter l.loginProvider == @lp && l.providerKey == @pk return u")
+                .WithParameters(new Dictionary<string, object> {  { "lp", loginProvider }, { "pk", providerKey} })
+                .ToListAsync();
 
+  
 
             return user.FirstOrDefault();
         }
@@ -209,7 +213,7 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
             var result = await client.DB().GetByExampleAsync<TUser>(new { normalizedUserName = normalizedUserName });
 
             if (result == null) {
-                return null;
+                return (TUser)null;
             }
 
             return result.FirstOrDefault();

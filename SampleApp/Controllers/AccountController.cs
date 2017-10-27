@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using SampleApp.Models;
 using SampleApp.Models.AccountViewModels;
 using SampleApp.Services;
+using BorderEast.ASPNetCore.Identity.ArangoDB;
 
 namespace SampleApp.Controllers
 {
@@ -112,7 +113,18 @@ namespace SampleApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    IsEmailConfirmed = false,
+                    Logins = new List<UserLoginInfo>(),
+                    Claims = new List<Claim>(),
+                    Roles = new List<IdentityRole>(),
+                    NormalizedEmail = new LookupNormalizer().Normalize(model.Email),
+                    NormalizedUserName = new LookupNormalizer().Normalize(model.Email),
+                    AccessFailedCount = 0
+                    
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -455,6 +467,7 @@ namespace SampleApp.Controllers
 
         private void AddErrors(IdentityResult result)
         {
+            var s = result;
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);

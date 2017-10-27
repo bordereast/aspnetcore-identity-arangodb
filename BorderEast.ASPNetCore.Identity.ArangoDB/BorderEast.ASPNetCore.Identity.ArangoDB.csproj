@@ -17,9 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BorderEast.ArangoDB.Client" Version="0.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bordereast-arangodb-net-core\arangodb-net-core\src\BorderEast.ArangoDB.Client\BorderEast.ArangoDB.Client\BorderEast.ArangoDB.Client.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderEast.ASPNetCore.Identity.ArangoDB", "BorderEast.ASPNetCore.Identity.ArangoDB\BorderEast.ASPNetCore.Identity.ArangoDB.csproj", "{8796C97D-16F9-4FFC-AEDF-71BE9C911E64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{C307BA66-46E1-4505-AA65-A10FA5B6195C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BorderEast.ArangoDB.Client", "..\..\bordereast-arangodb-net-core\arangodb-net-core\src\BorderEast.ArangoDB.Client\BorderEast.ArangoDB.Client\BorderEast.ArangoDB.Client.csproj", "{26763940-BEDD-4E4C-A6A6-F6179CC8385B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C307BA66-46E1-4505-AA65-A10FA5B6195C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C307BA66-46E1-4505-AA65-A10FA5B6195C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C307BA66-46E1-4505-AA65-A10FA5B6195C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26763940-BEDD-4E4C-A6A6-F6179CC8385B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26763940-BEDD-4E4C-A6A6-F6179CC8385B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26763940-BEDD-4E4C-A6A6-F6179CC8385B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26763940-BEDD-4E4C-A6A6-F6179CC8385B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

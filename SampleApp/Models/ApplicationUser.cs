@@ -11,5 +11,6 @@ namespace SampleApp.Models
     [JsonObject(Id = "IdentityUser")]
     public class ApplicationUser : IdentityUser
     {
+        
     }
 }
