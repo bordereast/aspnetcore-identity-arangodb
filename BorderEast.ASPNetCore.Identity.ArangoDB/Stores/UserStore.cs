@@ -191,8 +191,12 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
                 throw new ArgumentNullException(nameof(loginProvider));
             }
 
-               
-            var user = await client.DB().Query<TUser>("for u in IdentityUser for l in u.logins filter l.loginProvider == @lp && l.providerKey == @pk return u")
+            //for u in IdentityUser for l in u.logins filter l.loginProvider == @lp && l.providerKey == @pk return u
+            var user = await client.DB().Query<TUser>("for u in IdentityUser " +
+                      "let l = u.logins[*].loginProvider " +
+                      "let p = u.logins[*].providerKey " +
+                      "filter  @lp  in l and @pk in p " +
+                      "return u")
                 .WithParameters(new Dictionary<string, object> {  { "lp", loginProvider }, { "pk", providerKey} })
                 .ToListAsync();
 
