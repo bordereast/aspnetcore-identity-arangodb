@@ -63,10 +63,7 @@ In `Startup.cs`, add the following to `ConfigureServices`:
 
             services.AddSingleton<IArangoClient>(ArangoClient.Client());
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
-                options.Cookies.ApplicationCookie.CookieName = "Interop";
-            })
+            services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddArangoDbStores()
             .AddDefaultTokenProviders();
             
