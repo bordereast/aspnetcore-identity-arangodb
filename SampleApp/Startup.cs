@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -62,12 +62,14 @@ namespace SampleApp
 
             services.AddSingleton<IArangoClient>(ArangoClient.Client());
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
-                options.Cookies.ApplicationCookie.CookieName = "Interop";
-            })
+            services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddArangoDbStores()
             .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.CookieName = "Interop";
+            });
 
             services.AddMvc();
 
@@ -95,7 +97,7 @@ namespace SampleApp
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

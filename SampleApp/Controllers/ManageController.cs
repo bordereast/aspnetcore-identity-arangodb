@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,6 @@ namespace SampleApp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly string _externalCookieScheme;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
@@ -26,14 +26,12 @@ namespace SampleApp.Controllers
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
-          IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
           ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
@@ -303,7 +301,7 @@ namespace SampleApp.Controllers
             var userLogins = await _userManager.GetLoginsAsync(user);
 
 
-            var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
+            var otherLogins = _signInManager.GetExternalAuthenticationSchemesAsync().Result.Where(auth => userLogins.All(ul => auth.Name != ul.LoginProvider)).ToList();
             ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
             return View(new ManageLoginsViewModel
             {
@@ -319,7 +317,7 @@ namespace SampleApp.Controllers
         public async Task<IActionResult> LinkLogin(string provider)
         {
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Action(nameof(LinkLoginCallback), "Manage");
@@ -348,7 +346,7 @@ namespace SampleApp.Controllers
             {
                 message = ManageMessageId.AddLoginSuccess;
                 // Clear the existing external cookie to ensure a clean login process
-                await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
