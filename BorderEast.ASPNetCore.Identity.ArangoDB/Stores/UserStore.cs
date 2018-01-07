@@ -74,7 +74,10 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB.Stores {
                 throw new ArgumentNullException(nameof(login));
             }
 
-            user.Logins.Add(login);
+            user.Logins.Add(
+                //to avoid serializing properites from derived classes such as ExternalLoginInfo 
+                //which in .net core 2.0 contains undetectable reference loop in Claims
+                new UserLoginInfo(login.LoginProvider, login.ProviderKey, login.ProviderDisplayName));
 
             return Task.CompletedTask;
         }

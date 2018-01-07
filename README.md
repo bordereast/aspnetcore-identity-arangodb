@@ -70,4 +70,10 @@ In `Startup.cs`, add the following to `ConfigureServices`:
 Ensure this is all added before the `services.AddMvc();` statement.
 
 #### 6 Setup ArangoDB
-Ensure ArangoDB is installed and adjust the database/username/password settings above. To run as is, set the root password to your machine username (run `echo %USERNAME%` on cmd line) and create the IdentityUser and IdentityRole collections in the _system database.
+Ensure ArangoDB is installed and adjust the database/username/password settings above. To run as is, set the root password to your machine username (run `echo %USERNAME%` on cmd line) and create the IdentityUser and IdentityRole collections in the your database using the following script:
+
+			db._create("IdentityUser");
+			db._create("IdentityRole");
+
+			db.IdentityUser.ensureIndex({ type: "hash", fields: [ "normalizedUserName" ], unique: true });
+			db.IdentityUser.ensureIndex({ type: "hash", fields: [ "logins[*].providerKey" ] });
