@@ -76,4 +76,5 @@ Ensure ArangoDB is installed and adjust the database/username/password settings 
 			db._create("IdentityRole");
 
 			db.IdentityUser.ensureIndex({ type: "hash", fields: [ "normalizedUserName" ], unique: true });
+			db.IdentityUser.ensureIndex({ type: "hash", fields: [ "normalizedEmail" ], unique: true });
 			db.IdentityUser.ensureIndex({ type: "hash", fields: [ "logins[*].providerKey" ] });
