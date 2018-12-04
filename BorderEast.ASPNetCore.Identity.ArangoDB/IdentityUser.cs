@@ -21,6 +21,7 @@ namespace BorderEast.ASPNetCore.Identity.ArangoDB
             Claims = new List<Claim>();
         }
 
+        public string Tenant { get; set; }
 
         public string UserName { get; set; }
 
